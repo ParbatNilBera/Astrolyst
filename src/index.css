@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme{
+  --font-display:"Roboto Condensed", sans-serif;
+  --breakpoint-3xl:1920px;
+  --color-primary:#3F51B5;  /*Indigo*/
+  --color-accent:#FFC107;    /*Amber*/
+}
