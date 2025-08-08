@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
 import { useContext } from "react";
-import { UserContext } from "../Context/userContext";
+import { UserContext } from "../Context/UserContext";
 import axiosInstance from "../utils/axiosInstance";
 import { API_PATH } from "../utils/apiPath";
 import toast from "react-hot-toast";
