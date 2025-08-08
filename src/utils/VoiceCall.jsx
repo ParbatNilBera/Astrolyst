@@ -32,7 +32,7 @@ export default function VoiceCall() {
       // );
 
       const tokenRes = await axios.get(
-        `http://localhost:8100/rtc-token?channel=${channelName}&uid=0`
+        `https://astrolyst-backend.onrender.com/rtc-token?channel=${channelName}&uid=0`
       );
       if (!tokenRes) {
         console.error("Sorry No token is loaded");
