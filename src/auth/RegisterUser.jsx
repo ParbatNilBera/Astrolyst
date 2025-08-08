@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Eye, EyeOff, User, Mail, Phone, Lock, UserPlus } from "lucide-react";
 import axiosInstance from "../utils/axiosInstance";
 import { API_PATH } from "../utils/apiPath";
-import { UserContext } from "../Context/userContext";
+import { UserContext } from "../Context/UserContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
