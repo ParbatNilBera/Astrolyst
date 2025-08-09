@@ -60,6 +60,67 @@ export default function LoginAstrologer() {
     }
   };
 
+  // const handleSubmit = async () => {
+  //   const newErrors = {};
+
+  //   // Validate email
+  //   if (!formData.email) {
+  //     newErrors.email = "Email is required";
+  //   } else if (!validateEmail(formData.email)) {
+  //     newErrors.email = "Please enter a valid email address";
+  //   }
+
+  //   // Validate password
+  //   if (!formData.password) {
+  //     newErrors.password = "Password is required";
+  //   } else {
+  //     const passwordValidation = validatePassword(formData.password);
+  //     if (!passwordValidation.isValid) {
+  //       const missingRequirements = [];
+  //       if (!passwordValidation.minLength)
+  //         missingRequirements.push("8 characters");
+  //       if (!passwordValidation.hasUpperCase)
+  //         missingRequirements.push("1 uppercase letter");
+  //       if (!passwordValidation.hasLowerCase)
+  //         missingRequirements.push("1 lowercase letter");
+  //       if (!passwordValidation.hasSpecialChar)
+  //         missingRequirements.push("1 special character");
+
+  //       newErrors.password = `Password must contain: ${missingRequirements.join(
+  //         ", "
+  //       )}`;
+  //     }
+  //   }
+
+  //   // If any validation errors
+  //   if (Object.keys(newErrors).length > 0) {
+  //     setErrors(newErrors);
+  //     return;
+  //   }
+
+  //   setIsSubmitting(true);
+
+  //   try {
+  //     const { data } = await axiosInstance.post(
+  //       API_PATH.AUTH.LOGIN_ASTROLOGER,
+  //       formData
+  //     );
+
+  //     if (!data?.data?.token) {
+  //       throw new Error(data.message || "Invalid email or password");
+  //     }
+
+  //     toast.success("Login Successfully!");
+  //     localStorage.setItem("token", data.data.token);
+  //     updateUser({ ...data.data, token: data.data.token });
+  //     navigate("/astrologer-dashboard");
+  //   } catch (error) {
+  //     toast.error(error.message);
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
   const handleSubmit = async () => {
     const newErrors = {};
 
@@ -113,6 +174,23 @@ export default function LoginAstrologer() {
       toast.success("Login Successfully!");
       localStorage.setItem("token", data.data.token);
       updateUser({ ...data.data, token: data.data.token });
+
+      // ✅ Call enable API after successful login
+      try {
+        await axiosInstance.put(
+          API_PATH.CALL.ENABLE_ASTROLOGER,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${data.data.token}`,
+            },
+          }
+        );
+        console.log("Astrologer availability enabled");
+      } catch (enableErr) {
+        console.error("Failed to enable astrologer availability:", enableErr);
+      }
+
       navigate("/astrologer-dashboard");
     } catch (error) {
       toast.error(error.message);

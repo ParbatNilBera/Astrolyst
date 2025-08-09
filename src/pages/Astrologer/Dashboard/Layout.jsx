@@ -1,10 +1,30 @@
 // Layout.jsx
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { Menu, Star } from "lucide-react";
 import Sidebar from "./SideBar";
+import { UserContext } from "../../../Context/UserContext";
+import { connectSocket, socket } from "../../../socket/socket";
+import toast from "react-hot-toast";
 
 const Layout = () => {
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (user?.role === "astrologer") {
+      connectSocket(user._id);
+      socket.on("incoming_call", (payload) => {
+        // show modal/popup with payload.user
+        // you can auto-refresh list or show accept popup
+        console.log("Incoming call", payload);
+        toast.warning("You got a call");
+        // optionally add it to calls state:
+      });
+    }
+    return () => {
+      socket.off("incoming_call");
+    };
+  }, [user]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 

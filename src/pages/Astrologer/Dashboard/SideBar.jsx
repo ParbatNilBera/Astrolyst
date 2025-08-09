@@ -1,6 +1,6 @@
 // Sidebar.jsx
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   User,
   Calendar,
@@ -12,8 +12,13 @@ import {
   X,
 } from "lucide-react";
 import { UserContext } from "../../../Context/UserContext";
+import toast from "react-hot-toast";
+import axiosInstance from "../../../utils/axiosInstance";
+import { API_PATH } from "../../../utils/apiPath";
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+  const { updateUser } = useContext(UserContext);
   const menuItems = [
     { path: "/profile", label: "Profile", icon: User },
     {
@@ -25,6 +30,19 @@ const Sidebar = ({ isOpen, onClose }) => {
     { path: "/community-astrologer", label: "Community", icon: Users },
   ];
 
+  const handleLogout = async () => {
+    const res = await axiosInstance.put(API_PATH.CALL.DISABLE_ASTROLOGER);
+    if (res) {
+      console.log(res.data.message, "Success");
+    }
+    // Remove token and user info from localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    updateUser(null); // Only if you have a setUser function in your component/context
+    toast.success("Logout Successfully");
+    navigate("/");
+  };
   return (
     <>
       {/* Mobile Overlay */}
@@ -85,6 +103,15 @@ const Sidebar = ({ isOpen, onClose }) => {
             </NavLink>
           ))}
         </nav>
+        {/* Bottom */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <button
+            className="bg-red-500 px-4 py-2 text-white  rounded"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </>
   );

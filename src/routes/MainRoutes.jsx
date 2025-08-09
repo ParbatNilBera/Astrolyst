@@ -15,6 +15,8 @@ import CommunityDetails from "../pages/community/CommunityDetails";
 import AstrologerDashboard from "../pages/Astrologer/AstrologerDashboard";
 import PublicLayout from "./PublicLayout";
 import VoiceCall from "../utils/VoiceCall";
+import AstrologerCall from "../pages/Astrologer/AstrologerCall";
+import GetCall from "../pages/Astrologer/Dashboard/GetCall";
 
 const MainRoutes = () => {
   return (
@@ -29,6 +31,7 @@ const MainRoutes = () => {
           <Route path="/kundli-match" element={<RegisterUser />} />
           <Route path="/astrologers" element={<Astrologers />} />
           <Route path="/community" element={<Community />} />
+          <Route path="talk-to-astrologer" element={<AstrologerCall />} />
           <Route path="/test" element={<VoiceCall />} />
           <Route
             path="/community/:communityId"
@@ -43,7 +46,7 @@ const MainRoutes = () => {
 
         {/* Astrologer Dashboard */}
         <Route element={<Layout />}>
-          <Route path="bookings" element={<Bookings />} />
+          <Route path="bookings" element={<GetCall />} />
           <Route path="community-astrologer" element={<Community />} />
           <Route
             path="community-astrologer/:communityId"

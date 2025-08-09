@@ -11,6 +11,11 @@ export default function AstrolystNavbar() {
 
   const navItems = [
     {
+      id: 2,
+      name: "Talk To Astrologer",
+      link: "/talk-to-astrologer",
+    },
+    {
       id: 3,
       name: "Book Astrologer",
       link: "/astrologers",

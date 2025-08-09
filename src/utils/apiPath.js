@@ -1,4 +1,5 @@
-export const BASE_URL = "https://astrolyst-backend.onrender.com";
+// export const BASE_URL = "https://astrolyst-backend.onrender.com";
+export const BASE_URL = "http://localhost:8100";
 
 export const API_PATH = {
   AUTH: {
@@ -38,5 +39,13 @@ export const API_PATH = {
     GET_COMUNITY_USER: (communityId) =>
       `/api/comunity/get-all-user/${communityId}`,
     CREATE_POST: `/api/post/upload`,
+  },
+  CALL: {
+    ENABLE_ASTROLOGER: "/api/call/enable",
+    DISABLE_ASTROLOGER: "/api/call/disable",
+    GET_ACTIVE_ASTROLOGER: "/api/call/get-active-astrologers",
+    CALL_ASTROLOGER: "/api/call/call",
+    GET_CALLS: "/api/call/calls",
+    ACCEPT_CALL: (callId) => `/api/call/accept/${callId}`,
   },
 };
