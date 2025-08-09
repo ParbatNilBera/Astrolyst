@@ -27,6 +27,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       icon: Calendar,
     },
     { path: "/bookings", label: "Bookings", icon: BookOpen },
+    { path: "/Chat", label: "Chat", icon: BookOpen },
     { path: "/community-astrologer", label: "Community", icon: Users },
   ];
 

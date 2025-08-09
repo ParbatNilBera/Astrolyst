@@ -48,4 +48,11 @@ export const API_PATH = {
     GET_CALLS: "/api/call/calls",
     ACCEPT_CALL: (callId) => `/api/call/accept/${callId}`,
   },
+  CHAT: {
+    GET_CHAT: "/api/chat", // GET /api/chat/:userId/:astrologerId
+    GET_CONVERSATIONS: "/api/chat/conversations", // post /api/chat/conversations/:userId
+    SEND: "/api/chat/send", // POST (fallback)
+    MARK_READ: "/api/chat/mark-read", // POST
+    GET_ASTRO_CHATS: "/api/chat/astrologer",
+  },
 };

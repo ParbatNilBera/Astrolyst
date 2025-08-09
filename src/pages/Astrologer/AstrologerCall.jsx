@@ -12,12 +12,11 @@ import {
 import { UserContext } from "../../Context/UserContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-
+import { FaUserAstronaut } from "react-icons/fa";
 const AstrologersGrid = () => {
   const [astrologerData, setAstrologerData] = useState();
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  console.log(user);
 
   useEffect(() => {
     const fetchAllAstrologer = async () => {
@@ -30,20 +29,15 @@ const AstrologersGrid = () => {
     fetchAllAstrologer();
   }, []);
 
-  // in useEffect on mount (if logged in)
   useEffect(() => {
     if (user?.id || user?._id) {
       connectSocket(user._id || user.id);
-      // listen for acceptance
       socket.on("call_accepted", (payload) => {
-        // payload: { callId, channelName, astrologer }
         if (payload?.channelName) {
-          // navigate to voice call page (auto-join)
           navigate(`/test?channel=${payload.channelName}`);
         }
       });
     }
-
     return () => {
       socket.off("call_accepted");
     };
@@ -61,59 +55,70 @@ const AstrologersGrid = () => {
     });
     if (response) {
       toast.success("Call Booked Successfully");
-      return;
     }
   };
 
-  if (!astrologerData) {
-    return <div>No astrologers are active at this moment</div>;
+  if (!astrologerData || astrologerData?.length === 0) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-yellow-50 px-4">
+        <div className="bg-yellow-100 rounded-3xl p-12 shadow-lg flex flex-col items-center max-w-md mx-auto">
+          <FaUserAstronaut className="text-yellow-400 text-9xl mb-6 animate-bounce" />
+          <h2 className="text-3xl font-extrabold text-yellow-900 mb-2 text-center">
+            No Astrologers Available
+          </h2>
+          <p className="text-yellow-800 text-center text-lg max-w-xs">
+            Sorry, no astrologers are active at this moment. Please check back
+            later for guidance and insights.
+          </p>
+        </div>
+      </div>
+    );
   }
+
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-yellow-100 to-yellow-50 py-10 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+        <h1 className="text-4xl font-extrabold text-yellow-900 text-center mb-12 drop-shadow-md">
           Professional Astrologers
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {astrologerData?.map((astrologer) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {astrologerData.map((astrologer) => (
             <div
               key={astrologer._id}
-              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200"
+              className="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-yellow-300 flex flex-col overflow-hidden"
             >
-              {/* Header with Profile Icon and Basic Info */}
-              <div className="p-6 pb-4">
-                <div className="flex items-start gap-4 mb-4">
-                  <FaUserCircle className="text-4xl text-gray-400 flex-shrink-0 mt-1" />
+              {/* Header */}
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="flex items-start gap-5 mb-5">
+                  <FaUserCircle className="text-yellow-600 text-7xl flex-shrink-0 rounded-full drop-shadow-sm" />
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-lg font-bold text-gray-900 truncate">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-xl font-semibold text-yellow-900 truncate">
                         {astrologer.name}
                       </h3>
                       {astrologer.isApprovedByAdmin && (
-                        <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full flex-shrink-0">
+                        <span className="bg-yellow-200 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full select-none shadow-sm">
                           Verified
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 mb-1">
+                    <p className="text-yellow-700 font-medium mb-1">
                       {astrologer.location}
                     </p>
-                    <p className="text-sm text-gray-600 mb-1">
-                      {astrologer.gender}
-                    </p>
-                    <p className="text-sm text-gray-500 truncate">
+                    <p className="text-yellow-700 mb-1">{astrologer.gender}</p>
+                    <p className="text-yellow-600 truncate text-sm">
                       {astrologer.email}
                     </p>
                   </div>
                 </div>
 
-                {/*Avalibility*/}
-                <div className="flex flex-wrap gap-1">
-                  {astrologer.availability?.map((availability, index) => (
+                {/* Availability */}
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {astrologer.availability?.map((availability, i) => (
                     <span
-                      key={index}
-                      className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full"
+                      key={i}
+                      className="bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full select-none"
                     >
                       {availability.day}
                     </span>
@@ -121,29 +126,33 @@ const AstrologersGrid = () => {
                 </div>
 
                 {/* Experience */}
-                <div className="flex items-center gap-2 mb-4">
-                  <FaStar className="text-yellow-500 text-sm" />
-                  <span className="text-sm text-gray-700 font-medium">
+                <div className="flex items-center gap-2 mb-6">
+                  <FaStar className="text-yellow-500 text-base" />
+                  <span className="text-yellow-800 font-semibold">
                     {astrologer.experience} years experience
                   </span>
                 </div>
 
                 {/* Pricing */}
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="flex items-center gap-2">
-                    <FaComment className="text-blue-500 text-sm" />
+                <div className="grid grid-cols-2 gap-6 mb-6">
+                  <div className="flex items-center gap-3">
+                    <FaComment className="text-yellow-600 text-lg" />
                     <div>
-                      <p className="text-xs text-gray-500">Chat</p>
-                      <p className="text-sm font-semibold text-gray-900">
+                      <p className="text-xs text-yellow-700 font-medium">
+                        Chat
+                      </p>
+                      <p className="text-yellow-900 font-semibold text-sm">
                         ₹{astrologer.pricing.chatPerMin}/min
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <FaPhone className="text-green-500 text-sm" />
+                  <div className="flex items-center gap-3">
+                    <FaPhone className="text-yellow-600 text-lg" />
                     <div>
-                      <p className="text-xs text-gray-500">Call</p>
-                      <p className="text-sm font-semibold text-gray-900">
+                      <p className="text-xs text-yellow-700 font-medium">
+                        Call
+                      </p>
+                      <p className="text-yellow-900 font-semibold text-sm">
                         ₹{astrologer.pricing.callPerMin}/min
                       </p>
                     </div>
@@ -151,18 +160,18 @@ const AstrologersGrid = () => {
                 </div>
 
                 {/* Languages */}
-                <div className="mb-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <FaGlobe className="text-gray-500 text-sm" />
-                    <span className="text-sm font-medium text-gray-700">
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <FaGlobe className="text-yellow-700 text-base" />
+                    <span className="text-yellow-900 font-semibold text-sm">
                       Languages
                     </span>
                   </div>
-                  <div className="flex flex-wrap gap-1">
-                    {astrologer.languages.map((language, index) => (
+                  <div className="flex flex-wrap gap-2">
+                    {astrologer.languages.map((language, i) => (
                       <span
-                        key={index}
-                        className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full"
+                        key={i}
+                        className="bg-yellow-200 text-yellow-900 text-xs font-semibold px-3 py-1 rounded-full shadow-sm select-none"
                       >
                         {language}
                       </span>
@@ -171,15 +180,15 @@ const AstrologersGrid = () => {
                 </div>
 
                 {/* Expertise */}
-                <div className="mb-6">
-                  <p className="text-sm font-medium text-gray-700 mb-2">
+                <div className="mb-6 flex-grow">
+                  <p className="text-yellow-900 font-semibold text-sm mb-3">
                     Expertise
                   </p>
-                  <div className="flex flex-wrap gap-1">
-                    {astrologer.expertise.map((skill, index) => (
+                  <div className="flex flex-wrap gap-2">
+                    {astrologer.expertise.map((skill, i) => (
                       <span
-                        key={index}
-                        className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full"
+                        key={i}
+                        className="bg-yellow-200 text-yellow-900 text-xs font-semibold px-3 py-1 rounded-full shadow-sm select-none"
                       >
                         {skill}
                       </span>
@@ -191,12 +200,10 @@ const AstrologersGrid = () => {
               {/* Call Button */}
               <div className="px-6 pb-6">
                 <button
-                  className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-                  onClick={() => {
-                    handleCallNow(astrologer._id);
-                  }}
+                  onClick={() => handleCallNow(astrologer._id)}
+                  className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold py-3 rounded-2xl shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300 focus:ring-opacity-60 flex items-center justify-center gap-2"
                 >
-                  <FaPhone className="text-sm" />
+                  <FaPhone className="text-lg" />
                   Call Now
                 </button>
               </div>

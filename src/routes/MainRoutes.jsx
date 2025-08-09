@@ -17,8 +17,25 @@ import PublicLayout from "./PublicLayout";
 import VoiceCall from "../utils/VoiceCall";
 import AstrologerCall from "../pages/Astrologer/AstrologerCall";
 import GetCall from "../pages/Astrologer/Dashboard/GetCall";
+import ChatWithAstrologers from "../pages/Astrologer/ChatWithAstrologers";
+import { useContext, useEffect } from "react";
+import { connectSocket } from "../socket/socket";
+import { UserContext } from "../Context/UserContext";
+import ChatPage from "../pages/chat/ChatPage";
+import AstrologerChat from "../pages/Astrologer/Dashboard/AstrologerChat";
+import AstrologerChatPage from "../pages/Astrologer/Dashboard/AstrologerChatPage";
+import ChatIcon from "../components/ChatIcon";
 
 const MainRoutes = () => {
+  const { user } = useContext(UserContext);
+  console.log("from Main Routes", user);
+  useEffect(() => {
+    if (user && user._id) {
+      console.log("Namaskar doston");
+      connectSocket(user._id);
+    }
+  }, [user]);
+
   return (
     <Router>
       <Routes>
@@ -32,6 +49,10 @@ const MainRoutes = () => {
           <Route path="/astrologers" element={<Astrologers />} />
           <Route path="/community" element={<Community />} />
           <Route path="talk-to-astrologer" element={<AstrologerCall />} />
+          <Route path="/chat-to-astrologer" element={<ChatWithAstrologers />} />
+          <Route path="/chat/:astrologerId" element={<ChatPage />} />
+          <Route path="/mychats" element={<ChatIcon />} />
+
           <Route path="/test" element={<VoiceCall />} />
           <Route
             path="/community/:communityId"
@@ -47,7 +68,12 @@ const MainRoutes = () => {
         {/* Astrologer Dashboard */}
         <Route element={<Layout />}>
           <Route path="bookings" element={<GetCall />} />
+          <Route path="chat" element={<AstrologerChat />} />
           <Route path="community-astrologer" element={<Community />} />
+          <Route
+            path="astrologer/chat/:userId"
+            element={<AstrologerChatPage />}
+          />
           <Route
             path="community-astrologer/:communityId"
             element={<CommunityDetails />}
