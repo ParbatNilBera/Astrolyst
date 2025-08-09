@@ -1,5 +1,5 @@
-// export const BASE_URL = "https://astrolyst-backend.onrender.com";
-export const BASE_URL = "http://localhost:8100";
+export const BASE_URL = "https://astrolyst-backend.onrender.com";
+// export const BASE_URL = "http://localhost:8100";
 
 export const API_PATH = {
   AUTH: {
