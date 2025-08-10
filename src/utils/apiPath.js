@@ -33,12 +33,21 @@ export const API_PATH = {
     ADD_COMUNITY_MEMBERS: "/api/comunity/add-member",
     REMOVE_MEMBER: (communityId, targetUserId) =>
       `/api/comunity/${communityId}/remove/${targetUserId}`,
+    PROMOTE_TO_MODERATOR: (communityId, userId) =>
+      `/api/comunity/community/${communityId}/${userId}`,
+    DEMOTE_TO_MODERATOR: (communityId, userId) =>
+      `/api/comunity/community/${communityId}/${userId}`,
   },
   POST: {
     GET_POSTS_BY_ID: (communityId) => `/api/post/community/${communityId}`,
     GET_COMUNITY_USER: (communityId) =>
       `/api/comunity/get-all-user/${communityId}`,
     CREATE_POST: `/api/post/upload`,
+    LIKE_POST: (postId) => `/api/post/like/${postId}`,
+    DISLIKE_POST: (postId) => `/api/post/dislike/${postId}`,
+    GET_COMMENT_BY_POST: (postId) => `/api/post/comments/${postId}`,
+    ADD_COMMENT: (postId) => `/api/post/${postId}/comment`,
+    DELETE_COMMENTS: (commentId, postId) => `/api/post/${postId}/${commentId}`,
   },
   CALL: {
     ENABLE_ASTROLOGER: "/api/call/enable",
