@@ -38,13 +38,36 @@ const UserProvider = ({ children }) => {
     setLoading(false);
   };
 
+  const addMoneyToWalletye = (amount) => {
+    setUser((prevUser) => {
+      if (!prevUser) return prevUser;
+
+      const updatedUser = {
+        ...prevUser,
+        wallet: {
+          ...prevUser.wallet,
+          balance: (prevUser.wallet.balance || 0) + amount,
+        },
+      };
+
+      // Update localStorage
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      // You might want to update token or other things here if needed
+
+      return updatedUser;
+    });
+  };
+
   const clearUser = () => {
     setUser(null);
     localStorage.removeItem("token");
   };
 
   return (
-    <UserContext.Provider value={{ user, loading, updateUser, clearUser }}>
+    <UserContext.Provider
+      value={{ user, loading, updateUser, addMoneyToWalletye, clearUser }}
+    >
       {children}
     </UserContext.Provider>
   );

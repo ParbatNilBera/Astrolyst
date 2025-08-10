@@ -160,6 +160,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import toast from "react-hot-toast";
 import UserDetailsCard from "../cards/UserDetailsCard";
+import { User } from "lucide-react";
 
 export default function AstrolystNavbar() {
   const { user, clearUser, updateUser } = useContext(UserContext);
@@ -215,7 +216,7 @@ export default function AstrolystNavbar() {
 
             {/* User Info / Auth Buttons */}
             {user ? (
-              <div className="flex items-center space-x-5 bg-yellow-100/50 px-5 py-2 rounded-xl border border-yellow-200 shadow-md">
+              <div className="flex items-center space-x-4 bg-yellow-100/50 px-5 py-2 rounded-xl border border-yellow-200 shadow-md">
                 <div className="text-left">
                   <p className="font-semibold text-yellow-900 truncate max-w-xs">
                     {user.name}
@@ -224,6 +225,14 @@ export default function AstrolystNavbar() {
                     {user.email}
                   </p>
                 </div>
+                <button
+                  onClick={() => navigate("/profile")} // redirect on click
+                  title="View Profile"
+                  className="p-2 rounded-full hover:bg-yellow-300 transition"
+                  aria-label="User Profile"
+                >
+                  <User className="text-yellow-700" size={24} />
+                </button>
                 <button
                   onClick={() => {
                     clearUser();

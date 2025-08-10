@@ -64,4 +64,10 @@ export const API_PATH = {
     MARK_READ: "/api/chat/mark-read", // POST
     GET_ASTRO_CHATS: "/api/chat/astrologer",
   },
+
+  PAYMENT: {
+    PAY: "/payment",
+    VERIFY: "/verify",
+    ADD_MONEY_WALLET: "/api/wallet/add",
+  },
 };

@@ -25,6 +25,8 @@ import ChatPage from "../pages/chat/ChatPage";
 import AstrologerChat from "../pages/Astrologer/Dashboard/AstrologerChat";
 import AstrologerChatPage from "../pages/Astrologer/Dashboard/AstrologerChatPage";
 import ChatIcon from "../components/ChatIcon";
+import Profile from "../pages/Profile";
+import PaymentGateway from "../payment/PaymentGateway";
 
 const MainRoutes = () => {
   const { user } = useContext(UserContext);
@@ -43,6 +45,7 @@ const MainRoutes = () => {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginUser />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/free-kundli" element={<RegisterUser />} />
           <Route path="/kundli-match" element={<RegisterUser />} />
@@ -64,7 +67,7 @@ const MainRoutes = () => {
         <Route path="/login-astrologer" element={<LoginAstrologer />} />
         <Route path="/astrologer-apply" element={<ApplyForAstrology />} />
         <Route path="/admin" element={<LoginAdmin />} />
-
+        <Route path="/payment" element={<PaymentGateway />} />
         {/* Astrologer Dashboard */}
         <Route element={<Layout />}>
           <Route path="bookings" element={<GetCall />} />
